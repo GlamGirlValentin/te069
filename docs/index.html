@@ -1,1 +1,234 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Englisch Lernen — Startseite</title>
+  <meta name="description" content="Startseite einer Lernplattform zum Englisch lernen. Interaktive Übungen, Wort des Tages, Kurse.">
+  <style>
+    :root{
+      --bg:#f6f8fb; --card:#ffffff; --accent:#1e90ff; --muted:#6b7280; --glass: rgba(255,255,255,0.6);
+      --radius:12px; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#eef3fb);color:#0f1724;}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;max-width:1100px;margin:18px auto}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7dd3fc);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+    nav a{margin-left:14px;color:var(--muted);text-decoration:none;font-weight:600}
+    .container{max-width:1100px;margin:18px auto;padding:12px}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:24px;align-items:center}
+    .card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 6px 20px rgba(16,24,40,0.06)}
+    h1{margin:0 0 8px;font-size:28px}
+    p.lead{margin:0;color:var(--muted)}
+    .cta{margin-top:16px;display:flex;gap:10px}
+    .btn{padding:10px 14px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+    .btn-primary{background:var(--accent);color:white}
+    .btn-ghost{background:transparent;border:1px solid #e6eefb;color:var(--accent)}
+
+    /* right column */
+    .aside .stat{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .stat strong{font-size:18px}
+
+    /* features */
+    .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}
+
+    /* mini quiz */
+    .quiz{display:flex;flex-direction:column;gap:10px}
+    .choices button{display:block;width:100%;text-align:left;padding:10px;border-radius:8px;border:1px solid #eef3fb;background:transparent;cursor:pointer}
+    .choices button.correct{border-color:green;background:rgba(16,185,129,0.08)}
+    .choices button.wrong{border-color:#ff4d4d;background:rgba(255,77,77,0.06)}
+
+    footer{margin-top:28px;padding:20px;text-align:center;color:var(--muted)}
+
+    /* responsive */
+    @media (max-width:880px){
+      .hero{grid-template-columns:1fr}
+      .logo{width:44px;height:44px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">EN</div>
+      <div>
+        <div style="font-weight:800">EnglishStep</div>
+        <div style="font-size:12px;color:var(--muted)">Einfach. Praktisch. Täglich.</div>
+      </div>
+    </div>
+    <nav>
+      <a href="#kurse">Kurse</a>
+      <a href="#uebungen">Übungen</a>
+      <a href="#kontakt">Kontakt</a>
+      <button class="btn btn-primary" onclick="document.getElementById('signup').scrollIntoView({behavior:'smooth'})">Loslegen</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="card">
+        <h1>Englisch lernen — sicher und praxisnah</h1>
+        <p class="lead">Kurzlektionen, Alltagssituationen und tägliche Mini-Übungen. Für Anfänger bis Fortgeschrittene.</p>
+        <div class="cta">
+          <button class="btn btn-primary" onclick="startDemo()">Kostenlos starten</button>
+          <button class="btn btn-ghost" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">Mini-Quiz</button>
+        </div>
+
+        <div class="grid3" style="margin-top:18px">
+          <div class="card" style="padding:14px">
+            <strong>20+</strong>
+            <div style="color:var(--muted);font-size:13px">Lektionstypen</div>
+          </div>
+          <div class="card" style="padding:14px">
+            <strong>5min / Tag</strong>
+            <div style="color:var(--muted);font-size:13px">Kurzübungen</div>
+          </div>
+          <div class="card" style="padding:14px">
+            <strong>Niveau A1-C1</strong>
+            <div style="color:var(--muted);font-size:13px">Skalierbar</div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="aside">
+        <div class="card" style="padding:16px">
+          <div class="stat"><span>Wort des Tages</span><strong id="word">—</strong></div>
+          <div style="color:var(--muted);font-size:13px" id="word-meaning">Lade...</div>
+        </div>
+
+        <div class="card" style="padding:16px;margin-top:12px">
+          <div style="font-weight:700;margin-bottom:8px">Dein Fortschritt</div>
+          <div style="height:10px;background:#eef3fb;border-radius:8px;overflow:hidden">
+            <div id="progress" style="height:100%;width:32%;background:linear-gradient(90deg,var(--accent),#60a5fa)"></div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px">Tägliche Streak: <strong id="streak">3</strong> Tage</div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="uebungen" class="card" style="margin-top:20px">
+      <h2 style="margin-top:0">Mini-Übungen</h2>
+      <p style="color:var(--muted);margin:6px 0">Schnelle Praxis: Lesen, Hören, Sprechen, Schreiben.</p>
+
+      <div id="quiz" class="quiz" style="margin-top:12px">
+        <div class="card" style="padding:14px">
+          <div style="font-weight:700">Mini-Quiz: Übersetze</div>
+          <div style="color:var(--muted);font-size:13px;margin-top:6px" id="question">Lade Frage...</div>
+          <div class="choices" id="choices" style="margin-top:10px"></div>
+          <div id="feedback" style="margin-top:10px;font-weight:700"></div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn" onclick="nextQuestion()">Nächste Frage</button>
+            <button class="btn" onclick="resetQuiz()">Reset</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="kurse" style="margin-top:18px">
+      <div class="card">
+        <h2 style="margin-top:0">Kurse</h2>
+        <p style="color:var(--muted);margin:6px 0">Kurse nach Thema und Alltagssituationen. Schnelle Lektionen, Lernpfade und Tests.</p>
+        <div class="grid3" style="margin-top:12px">
+          <div class="card" style="padding:14px"><strong>Alltag & Small Talk</strong><div style="color:var(--muted);font-size:13px">Praktische Dialoge</div></div>
+          <div class="card" style="padding:14px"><strong>Business English</strong><div style="color:var(--muted);font-size:13px">E-Mails, Meetings</div></div>
+          <div class="card" style="padding:14px"><strong>Grammatik Schnell</strong><div style="color:var(--muted);font-size:13px">Klar & kompakt</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="signup" class="card" style="margin-top:18px;display:flex;gap:16px;align-items:center">
+      <div style="flex:1">
+        <h3 style="margin:0">Kostenlos testen</h3>
+        <p style="color:var(--muted);margin:6px 0">Trage deine E‑Mail ein und erhalte 7 Tage kostenlosen Zugang.</p>
+      </div>
+      <form style="display:flex;gap:8px;align-items:center" onsubmit="event.preventDefault();signup()">
+        <input id="email" type="email" placeholder="E-Mail" required style="padding:10px;border-radius:8px;border:1px solid #e6eefb">
+        <button class="btn btn-primary" type="submit">Start</button>
+      </form>
+    </section>
+
+    <footer>
+      <div>© <span id="year"></span> EnglishStep — Designed for learners</div>
+    </footer>
+  </main>
+
+  <script>
+    // simple word-of-the-day list
+    const words = [
+      {w:'achieve', m:'erreichen'},
+      {w:'challenge', m:'Herausforderung'},
+      {w:'journey', m:'Reise'},
+      {w:'practice', m:'Übung'},
+      {w:'improve', m:'verbessern'}
+    ];
+    const today = new Date().getDate();
+    const pick = words[today % words.length];
+    document.getElementById('word').textContent = pick.w;
+    document.getElementById('word-meaning').textContent = pick.m;
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // quiz data
+    const quizData = [
+      {q:'"Haus" auf Englisch?', a:['house','home','building'], correct:0},
+      {q:'"Danke" auf Englisch?', a:['please','thanks','sorry'], correct:1},
+      {q:'"Ich lerne" auf Englisch?', a:['I learn','I am learn','I am learning'], correct:2},
+      {q:'Wähle das korrekte Simple Past von "go"', a:['goed','went','gone'], correct:1}
+    ];
+    let qi = 0;
+
+    function renderQuestion(){
+      const item = quizData[qi % quizData.length];
+      document.getElementById('question').textContent = item.q;
+      const choices = document.getElementById('choices');
+      choices.innerHTML = '';
+      item.a.forEach((text, idx)=>{
+        const btn = document.createElement('button');
+        btn.textContent = text;
+        btn.onclick = ()=>select(idx);
+        choices.appendChild(btn);
+      });
+      document.getElementById('feedback').textContent = '';
+    }
+
+    function select(idx){
+      const item = quizData[qi % quizData.length];
+      const buttons = Array.from(document.getElementById('choices').children);
+      buttons.forEach((b,i)=>{b.disabled=true; b.classList.remove('correct','wrong')});
+      if(idx === item.correct){
+        buttons[idx].classList.add('correct');
+        document.getElementById('feedback').textContent = 'Richtig! Gut gemacht.';
+        increaseProgress(6);
+      } else {
+        buttons[idx].classList.add('wrong');
+        buttons[item.correct].classList.add('correct');
+        document.getElementById('feedback').textContent = 'Fast. Merke dir die richtige Antwort.';
+      }
+    }
+
+    function nextQuestion(){ qi++; renderQuestion(); }
+    function resetQuiz(){ qi=0; renderQuestion(); }
+
+    // small progress storage
+    function increaseProgress(p){
+      const bar = document.getElementById('progress');
+      let w = parseInt(bar.style.width) || 32;
+      w = Math.min(100, w + p);
+      bar.style.width = w + '%';
+      // persist to localStorage
+      localStorage.setItem('eng_progress', w);
+    }
+    // load progress
+    const stored = localStorage.getItem('eng_progress');
+    if(stored) document.getElementById('progress').style.width = stored + '%';
+
+    function startDemo(){ alert('Demo gestartet. Viel Erfolg!'); }
+    function signup(){ const e=document.getElementById('email').value; alert('Danke — ' + e + ' wurde registriert (Demo).'); }
+
+    // init
+    renderQuestion();
+  </script>
+</body>
+</html>
 
