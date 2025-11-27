@@ -250,3 +250,54 @@
   </script>
 </body>
 </html>
+<div id="english-game" style="border:1px solid #000; padding:10px; width:350px;">
+  <h3>Englisch Mini-Game</h3>
+  <p id="question"></p>
+  <input type="text" id="answer" placeholder="Deine Antwort">
+  <button onclick="checkAnswer()">Prüfen</button>
+  <p id="feedback"></p>
+  <p>Punkte: <span id="score">0</span></p>
+  <button onclick="resetGame()">Neustart</button>
+</div>
+
+<script>
+const words = [
+  {eng: "apple", ger: "Apfel"},
+  {eng: "dog", ger: "Hund"},
+  {eng: "cat", ger: "Katze"},
+  {eng: "book", ger: "Buch"},
+  {eng: "house", ger: "Haus"},
+  {eng: "car", ger: "Auto"},
+  {eng: "tree", ger: "Baum"}
+];
+
+let current = 0;
+let score = 0;
+
+function showQuestion() {
+  current = Math.floor(Math.random() * words.length);
+  document.getElementById("question").innerText = "Übersetze: " + words[current].ger;
+  document.getElementById("answer").value = "";
+  document.getElementById("feedback").innerText = "";
+}
+
+function checkAnswer() {
+  const answer = document.getElementById("answer").value.toLowerCase();
+  if(answer === words[current].eng) {
+    document.getElementById("feedback").innerText = "Richtig!";
+    score++;
+  } else {
+    document.getElementById("feedback").innerText = "Falsch! Richtig: " + words[current].eng;
+  }
+  document.getElementById("score").innerText = score;
+  setTimeout(showQuestion, 1000);
+}
+
+function resetGame() {
+  score = 0;
+  document.getElementById("score").innerText = score;
+  showQuestion();
+}
+
+showQuestion();
+</script>
