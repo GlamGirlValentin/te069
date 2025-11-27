@@ -1,1 +1,84 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Word Match Minigame</title>
+<style>
+  body{font-family:Arial,sans-serif;background:#f6f8fb;padding:20px;color:#0f1724}
+  .card{background:white;padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(16,24,40,0.06);max-width:700px;margin:20px auto}
+  .columns{display:flex;justify-content:space-between;gap:20px}
+  .column{flex:1;min-height:200px;padding:10px;background:#eef3fb;border-radius:8px}
+  .word{padding:8px 12px;margin:6px;background:#1e90ff;color:white;border-radius:8px;cursor:grab}
+  #timer, #score{font-weight:700;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>Word Match Minigame</h2>
+  <p style="color:#6b7280;">Ziehe die englischen Wörter auf die deutsche Bedeutung. Du hast 1 Minute.</p>
+  <div class="columns">
+    <div class="column" id="english"></div>
+    <div class="column" id="german"></div>
+  </div>
+  <div id="score">Punkte: 0</div>
+  <div id="timer">Zeit: 60</div>
+  <button onclick="startGame()">Spiel starten</button>
+</div>
+
+<script>
+const pairs=[
+  {eng:'house', de:'Haus'},
+  {eng:'cat', de:'Katze'},
+  {eng:'book', de:'Buch'},
+  {eng:'water', de:'Wasser'},
+  {eng:'dog', de:'Hund'}
+];
+let score=0;
+let time=60;
+let timerId;
+
+function shuffle(array){ return array.sort(()=>Math.random()-0.5); }
+
+function startGame(){
+  score=0; document.getElementById('score').textContent='Punkte: 0';
+  time=60; document.getElementById('timer').textContent='Zeit: 60';
+  const englishDiv=document.getElementById('english');
+  const germanDiv=document.getElementById('german');
+  englishDiv.innerHTML=''; germanDiv.innerHTML='';
+
+  const shuffledPairs=shuffle([...pairs]);
+  const germanWords=shuffle([...pairs]);
+
+  shuffledPairs.forEach(p=>{
+    const div=document.createElement('div'); div.textContent=p.eng; div.className='word'; div.draggable=true;
+    div.ondragstart=e=>{ e.dataTransfer.setData('text/plain',p.eng); };
+    englishDiv.appendChild(div);
+  });
+
+  germanWords.forEach(p=>{
+    const div=document.createElement('div'); div.textContent=p.de; div.className='word';
+    div.ondragover=e=>e.preventDefault();
+    div.ondrop=e=>{
+      const word=e.dataTransfer.getData('text/plain');
+      const pair=pairs.find(pair=>pair.eng===word);
+      if(pair && pair.de===p.de){
+        score++; document.getElementById('score').textContent='Punkte: '+score;
+        e.target.style.background='#1e7e34'; e.target.style.color='white';
+        e.target.ondrop=null;
+        document.querySelectorAll('#english .word').forEach(b=>{ if(b.textContent===word) b.remove() });
+      } else { e.target.style.background='#ff4d4d'; setTimeout(()=>{e.target.style.background='#eef3fb'},500); }
+    };
+    germanDiv.appendChild(div);
+  });
+
+  clearInterval(timerId);
+  timerId=setInterval(()=>{
+    time--; document.getElementById('timer').textContent='Zeit: '+time;
+    if(time<=0){ clearInterval(timerId); alert('Zeit vorbei! Punkte: '+score); }
+  },1000);
+}
+</script>
+</body>
+</html>
 
